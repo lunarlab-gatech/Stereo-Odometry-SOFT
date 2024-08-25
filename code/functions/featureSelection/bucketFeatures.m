@@ -17,8 +17,8 @@ function well_matches = bucketFeatures(matches, bucketing_params)
 % OUTPUT:
 %   - well_matches(N2, 1):
 %       - pt1_l: matched point in left image at time t-1
-%       - pt2_l: matched point in right image at time t
-%       - pt1_r: matched point in left image at time t-1
+%       - pt2_l: matched point in left image at time t
+%       - pt1_r: matched point in right image at time t-1
 %       - pt2_r: matched point in right image at time t
 
 % Intialize parameters

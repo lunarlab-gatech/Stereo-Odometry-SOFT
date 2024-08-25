@@ -1,4 +1,4 @@
-function [R, tr, vo_previous_updated] = visualSOFT(t, I1_l, I2_l, I1_r, I2_r, P1, P2, vo_params, vo_previous)
+function [R, tr, vo_previous_updated, time] = visualSOFT(t, I1_l, I2_l, I1_r, I2_r, P1, P2, vo_params, vo_previous)
 % VISUALSOFT Given the timestep t , Stereo Odometry based on careful Feature selection
 % and Tracking is implemented to estimate the rotation and translation between
 % the frames at t-1 and t
@@ -44,7 +44,9 @@ bucketed_matches = bucketFeatures(matches, vo_params.bucketing);
 time(3) = toc;
 
 %% Rotation (R) and Translation(tr) Estimation by minimizing Reprojection Error
+tic;
 [R, tr] = updateMotionP3P(bucketed_matches, P1, P2, dims);
+time(4) = toc;
 
 %% plotting
 

@@ -1,6 +1,7 @@
 # for data
 *.zip
 data/kitti
+data
 
 # Windows default autosave extension
 *.asv

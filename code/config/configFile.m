@@ -1,10 +1,12 @@
-%% ------------------------------------------------------------------------------
+%%  ------------------------------------------------------------------------------
 % Configuration File for Visual Odometry Algorithm
 %% -------------------------------------------------------------------------------
 
 % Path to the directories containing images
-data_params.path1 = '../data/kitti/00/image_0/';
-data_params.path2 = '../data/kitti/00/image_1/';
+data_params.path0 = '../data/kitti/00/image_2/';
+data_params.path1 = '../data/kitti/00/image_3/';
+data_params.path2 = '../data/kitti/00/image_2/';
+data_params.path3 = '../data/kitti/00/image_3/';
 
 % Path to calibration text file
 data_params.calib_file = '../data/kitti/00/calib.txt';
@@ -19,13 +21,17 @@ data_params.use_multithreads = 1;                % 0: disabled, 1: enabled
 
 %% Read the calibration file to find parameters of the cameras
 % !! TO-DO: Read from the calib_file instead
-
+  
 % calibration parameters for sequence 2010_03_09_drive_0000
-cam_params.fx = 7.188560000000e+02;               % focal length (u-coordinate) in pixels
-cam_params.cx = 6.071928000000e+02;               % principal point (u-coordinate) in pixels
-cam_params.fy = 7.188560000000e+02;               % focal length (v-coordinate) in pixels
-cam_params.cy = 1.852157000000e+02;               % principal point (v-coordinate) in pixels
-cam_params.base = 3.861448000000e+02;             % baseline in meters (absolute value)
+cam_params.fx     = 7.188560000000e+02;               % focal length (u-coordinate) in pixels
+cam_params.cx     = 6.071928000000e+02;               % principal point (u-coordinate) in pixels
+cam_params.fy     = 7.188560000000e+02;               % focal length (v-coordinate) in pixels
+cam_params.cy     = 1.852157000000e+02;               % principal point (v-coordinate) in pixels
+cam_params.base   = 3.861448000000e+02;               % baseline in pixels (absolute value)
+cam_params.P2_ftx = 4.538225000000e+01;               % Cam P2 tx in pixels (signed value)
+cam_params.P2_fty = -1.130887000000e-01;              % Cam P2 ty in pixels (signed value)
+cam_params.P3_ftx = -3.372877000000e+02;              % Cam P3 tx in pixels (signed value)
+cam_params.P3_fty = 2.369057000000e+00;               % Cam P3 ty in pixels (signed value)
 
 %% Parameters for Feature Extraction
 vo_params.feature.nms_n = 8;                      % non-max-suppression: min. distance between maxima (in pixels)

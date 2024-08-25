@@ -15,12 +15,14 @@ if (isempty(gcp) && data_params.use_multithreads)
 end
 
 %% Read directories containing images
+img_files0 = dir(strcat(data_params.path0,'*.png'));
 img_files1 = dir(strcat(data_params.path1,'*.png'));
 img_files2 = dir(strcat(data_params.path2,'*.png'));
-num_of_images = length(img_files1);
+img_files3 = dir(strcat(data_params.path3,'*.png'));
+num_of_images = length(img_files0);
 
 %% Read camera parameters
-[P1, P2] = createCamProjectionMatrices(cam_params);
+[P0, P1, P2, P3] = createCamProjectionMatrices(cam_params);
 
 %% Read ground truth file if flag is true
 if data_params.show_gt_flag
@@ -34,13 +36,14 @@ end
 %% Initialize variables for odometry
 pos = [0;0;0];
 Rpos = eye(3);
+timecost = zeros(4, num_of_images);
 
 %% Start Algorithm
 start = 0;
 for t = 1 : num_of_images
     %% Read images for time instant t
-    I2_l = imread([img_files1(t+1).folder, '/', img_files1(t).name]);
-    I2_r = imread([img_files2(t+1).folder, '/', img_files2(t).name]);
+    I2_l = im2gray(imread([img_files0(t+1).folder, '/', img_files0(t).name]));
+    I2_r = im2gray(imread([img_files1(t+1).folder, '/', img_files1(t).name]));
     fprintf('Frame: %i\n', t);
 
     %% Bootstraping for initialization
@@ -55,7 +58,8 @@ for t = 1 : num_of_images
     end
 
     %% Implement SOFT for time instant t+1
-    [R, tr, vo_previous] = visualSOFT(t, I1_l, I2_l, I1_r, I2_r, P1, P2, vo_params, vo_previous);
+    [R, tr, vo_previous, time] = visualSOFT(t, I1_l, I2_l, I1_r, I2_r, P0, P1, vo_params, vo_previous);
+    timecost(:, t) = time;
 
     %% Estimated pose relative to global frame at t = 0
     pos = pos + Rpos * tr';
@@ -91,3 +95,22 @@ for t = 1 : num_of_images
     pause(0.0001);
     fprintf('\n---------------------------------\n');
 end
+
+%% Visualize timecost.
+% Module names
+modules = {'Feature Detection', 'Feature Matching', 'Feature Selection', 'Motion Estimation'};
+
+% Plotting the time cost per module using a stacked area plot
+timecost = timecost * 1e3; % Convert to ms.
+figure;
+area(1:num_of_images, timecost', 'LineWidth', 1.5); % Transpose the matrix for proper plotting
+xlabel('Frame Number');
+ylabel('Time Cost (ms)');
+title('Time Cost per Module across Frames');
+legend(modules, 'Location', 'bestoutside'); % Add legend with module names
+grid on;
+
+% Optionally, customize the colors for each module
+% Define your own colors
+% colors = [0.1 0.6 0.4; 0.9 0.4 0.1; 0.2 0.3 0.7; 0.7 0.2 0.5];
+% colormap(colors);

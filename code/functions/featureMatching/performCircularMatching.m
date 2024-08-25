@@ -17,8 +17,8 @@ function matches = performCircularMatching(pts1_l, pts2_l, pts1_r, pts2_r, ...
 % OUTPUT:
 %   - matches: array of structure of matched points across four images
 %       - pt1_l: matched point in left image at time t-1
-%       - pt2_l: matched point in right image at time t
-%       - pt1_r: matched point in left image at time t-1
+%       - pt2_l: matched point in left image at time t
+%       - pt1_r: matched point in right image at time t-1
 %       - pt2_r: matched point in right image at time t
 
 % size of image
